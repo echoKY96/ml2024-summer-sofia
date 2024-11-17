@@ -14,7 +14,7 @@ class KNNRegressor:
         if self.k > len(self.target_values):
             raise ValueError("k must be less than or equal to the number of data points (N).")
 
-        distances = np.linalg.norm(self.data_points - np.array([x]), axis=1)
+        distances = np.abs(self.data_points - x)
         k_nearest_indices = np.argsort(distances)[:self.k]
         k_nearest_targets = self.target_values[k_nearest_indices]
         return np.mean(k_nearest_targets)
@@ -29,15 +29,15 @@ def main():
         if k <= 0:
             raise ValueError("k must be a positive integer.")
         
-        data_points = []
-        target_values = []
+        data_points = np.zeros(N)
+        target_values = np.zeros(N)
         
         print(f"Please enter {N} points (x, y):")
         for i in range(N):
             x = float(input(f"Enter x value for point {i + 1}: "))
             y = float(input(f"Enter y value for point {i + 1}: "))
-            data_points.append((x, y))
-            target_values.append(y)
+            data_points[i] = x
+            target_values[i] = y
 
         model = KNNRegressor(k)
         model.fit(data_points, target_values)
